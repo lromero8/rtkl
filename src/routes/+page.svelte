@@ -41,14 +41,14 @@
     }
 </script>
 
-<main>
+<div class="container">
     <div class="noun">
         <strong class:correct={hasAnswered && isMatch} class:incorrect={hasAnswered && !isMatch}>
           {noun.word}
         </strong>
     </div>
 
-    <div>
+    <div class="articles">
         <button on:click={() => matchArticle('die')}>die</button>
         <button on:click={() => matchArticle('der')}>der</button>
         <button on:click={() => matchArticle('das')}>das</button>
@@ -56,23 +56,28 @@
   
   
     {#if hasAnswered}
-      <strong class:correct={isMatch} class:incorrect={!isMatch}>
-        {isMatch ? 'Correct!' : 'Incorrect!'}
-      </strong>
+      <!-- <div class="result">
+        <strong class:correct={isMatch} class:incorrect={!isMatch}>
+          {isMatch ? 'Correct!' : 'Incorrect!'}
+        </strong>
+      </div> -->
   
-      {#if isMatch}
-        <button class="next" on:click={selectNewNoun}>Next</button>
       {/if}
-    {/if}
-</main>
+      <!-- {#if isMatch} -->
+        <div class="next">
+          <button class="next" disabled="{!isMatch}" on:click={selectNewNoun}>Next</button>
+        </div>
+      <!-- {/if} -->
+</div>
 
 
 <style lang="scss">
 
-    main {
+    div.container {
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-direction: column;
         height: 100vh;
         margin: 0;
         font-family: 'Arial', sans-serif;
@@ -80,15 +85,16 @@
         text-align: center;
     }
 
-    div {
-        display: block;
-        // margin-bottom: ;
-    }
-  
-    strong {
+    div.noun {
+      padding: 2.9em 2.9em;
+      background-color: #fff;
+      border: 1px solid #fff;
+      border-radius: 14px;
+
+
       font-size: 1.5rem;
       margin-bottom: 1rem;
-      color: #333;
+      color: #000;
     }
   
     button {
@@ -104,12 +110,12 @@
     }
   
     button:hover {
-      background-color: #333;
+      background-color: #2196f3;
       color: #fff;
     }
   
     button:active {
-      transform: translateY(1px);
+      // transform: translateY(1px);
     }
   
     strong.correct {
@@ -123,6 +129,11 @@
     button.next {
       background-color: #2196f3;
       color: #fff;
+      width: 215px;
+    }
+
+    button.next:disabled {
+      opacity: 0.45;
     }
   
     button.next:hover {
