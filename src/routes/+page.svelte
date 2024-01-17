@@ -38,6 +38,7 @@
         item = (item + 1) % nouns.length;
         noun = nouns[item];
         hasAnswered = false;
+        isMatch = false;
     }
 </script>
 
