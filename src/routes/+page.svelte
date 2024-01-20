@@ -5,23 +5,27 @@
     interface Noun {
         definiteArticle: Article;
         word: string;
+        englishTranslation: string;
     }
 
     let nouns: Noun[] = [
         {
             definiteArticle: 'das',
-            word: 'Wetter'
+            word: 'Wetter',
+            englishTranslation: 'The Weather'
         },
         {
             definiteArticle: 'die',
-            word: 'Brille'
+            word: 'Brille',
+            englishTranslation: 'The Glasses'
         },
         {
             definiteArticle: 'der',
-            word: 'Kaffee'
+            word: 'Kaffee',
+            englishTranslation: 'The Coffee'
         }
     ];
-
+    
     let item = Math.floor(Math.random() * nouns.length);
     let noun: Noun = nouns[item];
     let isMatch: boolean;
@@ -43,10 +47,13 @@
 </script>
 
 <div class="container">
-    <div class="noun">
+    <div class="noun-container">
         <strong class:correct={hasAnswered && isMatch} class:incorrect={hasAnswered && !isMatch}>
           {noun.word}
         </strong>
+        <div>
+          <small>{noun.englishTranslation}</small>
+        </div>
     </div>
 
     <div class="articles">
@@ -86,16 +93,20 @@
         text-align: center;
     }
 
-    div.noun {
+    div.noun-container {
       padding: 2.9em 2.9em;
       background-color: #fff;
       border: 1px solid #fff;
       border-radius: 14px;
-
-
-      font-size: 1.5rem;
       margin-bottom: 1rem;
+      font-size: 1.5rem;
       color: #000;
+      
+      small {
+        font-size: 0.5rem;
+      }
+
+
     }
   
     button {
