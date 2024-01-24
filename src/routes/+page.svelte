@@ -5,27 +5,17 @@
 
 </script>
 
-<div class="rtkl-container">
-
-  <Home />
-
+<div class="rtkl-language-dropdown">
+  <select name="" id="">
+      <option value="french">French</option>
+      <option value="spanish">Spanish</option>
+      <option value="german">German</option>
+  </select>
 </div>
 
-
-<style lang="scss">
-
-  // div.rtkl-container {
-  //       display: flex;
-  //       align-items: center;
-  //       justify-content: center;
-  //       flex-direction: column;
-  //       // max-height: auto;
-  //       // height: 100vh;
-  //       // margin: 0;
-  //       font-family: 'Arial', sans-serif;
-  //       background-color: #f5f5f5;
-  //       text-align: center;
-  //   }
-
-</style>
+<Home />
   
+
+<style>
+  div.rtkl-language-dropdown {}
+</style>
