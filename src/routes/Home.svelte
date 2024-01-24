@@ -1,6 +1,6 @@
 <script lang='ts'>
-    import Article from './article/Article.svelte';
-    import Noun from './noun/Noun.svelte';
+    import Article from '$lib/article/article.svelte';
+    import Noun from '$lib/noun/noun.svelte';
 </script>
 
 <Noun />
