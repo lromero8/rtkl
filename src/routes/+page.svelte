@@ -1,6 +1,6 @@
 <script lang="ts">
 
-  import Home from "./home.svelte";
+  import Home from "$lib/home.svelte";
   import '../styles/global.scss'
 
 </script>
