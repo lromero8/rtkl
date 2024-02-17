@@ -1,10 +1,14 @@
 <script lang='ts'>
     import Article from '$lib/article/article.svelte';
     import Noun from '$lib/noun/noun.svelte';
+
+    export let isGameOver = false;
+    export let score = 0;
+
 </script>
 
 <div class="rtkl-container">
-    <Noun />
+    <Noun bind:isGameOver={isGameOver} bind:score={score}/>
     <Article />
 </div>
 

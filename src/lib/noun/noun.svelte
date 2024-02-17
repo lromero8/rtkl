@@ -9,7 +9,14 @@
 
     let isMatch: boolean;
     let hasAnswered = false;
+    let totalArticles = NOUNS.length;
+    let allArticlesCompleted = false;
     let unsubscribe: () => void;
+    
+    export let isGameOver = false;
+    export let score = 0;
+
+
 
     matchArticle();
     selectNewNoun();
@@ -19,9 +26,21 @@
         hasAnswered = selectedArticle !== null;
         isMatch = noun.definiteArticle === selectedArticle;
         if (isMatch) {
-            setTimeout(() => selectNewNoun(), 500)
+          score++;
+          totalArticles -=1;
+          if (totalArticles === 0) {
+              allArticlesCompleted = true;
+              isGameOver = true;
+              // Logic or notification when all articles are completed
+              // Reset totalArticles
+              // Reset score
+          }
+          setTimeout(() => selectNewNoun(), 500)
         }
         else {
+          if (hasAnswered && !isMatch) {
+            score--;
+          }
           setTimeout(() => {
             hasAnswered = false;
           }, 500)
@@ -34,6 +53,10 @@
         noun = NOUNS[item];
         isMatch = false;
         articleStore.set(null);
+    }
+
+    function dispatchModalEvent() {
+
     }
 
     onDestroy(() => {
@@ -51,6 +74,10 @@
       <small>{noun.englishTranslation}</small>
     </div>
 </div>
+
+<span>Articles completed: {allArticlesCompleted}</span>
+<div>Score: {score}</div>
+
 
 <style>
 
