@@ -51,6 +51,7 @@
       const querySnapshot = await getDocs(collection(db, 'scores'));
       const docs = querySnapshot.docs.map<Score>(doc => doc.data().score as Score);
       savedScores = docs;
+      console.log(savedScores);
     }
     catch (error) {
       console.error('There was an error fetching the data');  
