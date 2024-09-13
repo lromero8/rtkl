@@ -1,6 +1,6 @@
 <script lang="ts">
+    import type { Article } from '$lib/article';
     import { articleStore } from '../../stores/store';
-    import type { Article } from '../noun/noun';
 
     function updateSelected(article: Article) {
         articleStore.set(article);

@@ -1,10 +1,4 @@
-export type Article = 'die' | 'der' | 'das';
-
-export interface Noun {
-    definiteArticle: Article;
-    word: string;
-    englishTranslation: string;
-}
+import type { Noun } from "$lib/noun";
 
 export const NOUNS: Noun[] = [
     {

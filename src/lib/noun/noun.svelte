@@ -1,7 +1,8 @@
 <script lang="ts">
     import { onDestroy } from 'svelte';
-    import { NOUNS, type Noun } from "./noun";
     import { articleStore } from '../../stores/store';
+    import { NOUNS } from './nouns';
+    import type { Noun } from '$lib/noun';
 
 
     let item = Math.floor(Math.random() * NOUNS.length);
