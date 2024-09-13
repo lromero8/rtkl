@@ -1,11 +1,10 @@
 // Import the functions you need from the SDKs you need
-import { deleteApp, getApp, getApps, initializeApp } from "firebase/app";
+import { getApp, getApps, initializeApp } from "firebase/app";
 // import { getAuth } from "firebase/auth";
-import { getFirestore, initializeFirestore } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
   authDomain: import.meta.env.VITE_AUTH_DOMAIN,
@@ -15,15 +14,5 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_APP_ID
 };
 
-// Initialize Firebase
-let firebaseApp;
-if (!getApps().length) {
-    firebaseApp = initializeApp(firebaseConfig)
-} else {
-    firebaseApp = getApp()
-    deleteApp(firebaseApp)
-    firebaseApp = initializeApp(firebaseConfig)
-}
-
-export const db = initializeFirestore(firebaseApp, { experimentalForceLongPolling: true })
-// export const auth = getAuth(firebaseApp)
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+export const db = getFirestore(app);
