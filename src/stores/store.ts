@@ -1,4 +1,4 @@
-import type { Article } from '$lib/noun/noun';
+import type { Article } from '$lib/article';
 import type { Score } from '$lib/score';
 import { writable } from 'svelte/store';
 
