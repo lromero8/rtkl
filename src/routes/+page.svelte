@@ -5,7 +5,7 @@
   import { db } from "$lib/firebase/firebase";
   import { onMount } from "svelte";
   import type { Score } from "$lib/score";
-  import { scoresStore } from "../stores/store";
+  import { savedScoresStore } from "../stores/store";
   import Home from '$lib/home/+page.svelte';
 
   export let data;
@@ -25,7 +25,7 @@
       if (data.scores) {
           console.log(data);
           savedScores = data.scores;
-          scoresStore.set(data.scores);
+          savedScoresStore.set(data.scores);
       }
   }
 
@@ -45,7 +45,7 @@
       saveDoc()
 
       // Directly update the store with the new score (no need to fetch from Firestore again)
-      scoresStore.update(scores => [...scores, newScore]);
+      savedScoresStore.update(scores => [...scores, newScore]);
 
       savedScores = [...savedScores, newScore];
       console.log(savedScores);

@@ -3,4 +3,4 @@ import type { Score } from '$lib/score';
 import { writable } from 'svelte/store';
 
 export const articleStore = writable<Article|null>();
-export const scoresStore = writable<Score[]>();
+export const savedScoresStore = writable<Score[]>();
