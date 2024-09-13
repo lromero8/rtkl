@@ -2,18 +2,13 @@
 
   import Home from "$lib/home.svelte";
   import '../styles/global.scss'
-  import { addDoc, collection, getDocs } from "firebase/firestore";
+  import { addDoc, collection } from "firebase/firestore";
   import { db } from "$lib/firebase/firebase";
   import { onMount } from "svelte";
+  import type { Score } from "$lib/score";
+  import { scoresStore } from "../stores/store";
 
-
-  type Language = 'german';
-
-  interface Score {
-    user: string;
-    language: Language;
-    score: number;
-  }
+  export let data;
 
   let newScore: Score = {
     user: '',
@@ -26,17 +21,35 @@
   let score = 0;
 
 
+  function setScoresStore() {
+      if (data.scores) {
+          console.log(data);
+          savedScores = data.scores;
+          scoresStore.set(data.scores);
+      }
+  }
+
+
   function saveScore() {
     try {
       newScore.user = nickName;
       newScore.score = score;
       newScore.language = 'german';
 
+      // Check if nickname already exists in the store (instead of fetching again)
       if (savedScores.some(sd => sd.user === newScore.user)) {
         throw Error('Nickname already exists!');
       }
 
+      // Save the score to Firestore
       saveDoc()
+
+      // Directly update the store with the new score (no need to fetch from Firestore again)
+      scoresStore.update(scores => [...scores, newScore]);
+
+      savedScores = [...savedScores, newScore];
+      console.log(savedScores);
+
       console.log(`${nickName}'s' scored of ${score} successfully saved!`);
     }
     catch (error) {
@@ -46,30 +59,17 @@
       
   }
 
-  async function fetchScores() {
-    try {
-      const querySnapshot = await getDocs(collection(db, 'scores'));
-      const docs = querySnapshot.docs.map<Score>(doc => doc.data().score as Score);
-      savedScores = docs;
-      console.log(savedScores);
-    }
-    catch (error) {
-      console.error('There was an error fetching the data', error);
-    }
-  }
-
   async function saveDoc() {
       try {
         if (newScore) {
           await addDoc(collection(db, 'scores'), { score: newScore });
-          await fetchScores();
         }
       } catch (err) {
           console.error("There was an error saving your information ", err);
       }
   }
 
-  onMount(fetchScores);
+  onMount(setScoresStore);
 
 </script>
 
