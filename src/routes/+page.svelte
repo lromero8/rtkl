@@ -1,12 +1,12 @@
 <script lang="ts">
 
-  import Home from "$lib/home.svelte";
   import '../styles/global.scss'
   import { addDoc, collection } from "firebase/firestore";
   import { db } from "$lib/firebase/firebase";
   import { onMount } from "svelte";
   import type { Score } from "$lib/score";
   import { scoresStore } from "../stores/store";
+  import Home from '$lib/home/+page.svelte';
 
   export let data;
 
