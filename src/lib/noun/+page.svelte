@@ -10,8 +10,8 @@
 
     let isMatch: boolean;
     let hasAnswered = false;
-    let totalArticles = NOUNS.length;
-    let allArticlesCompleted = false;
+    let totalNouns = NOUNS.length;
+    let allNounsCompleted = false;
     let unsubscribe: () => void;
     
     export let isGameOver = false;
@@ -24,13 +24,13 @@
 
     function matchArticle() {
       unsubscribe = articleStore.subscribe(selectedArticle => {
-        hasAnswered = selectedArticle !== null;
+        hasAnswered = selectedArticle !== null && selectedArticle !== undefined;
         isMatch = noun.definiteArticle === selectedArticle;
         if (isMatch) {
           score++;
-          totalArticles -=1;
-          if (totalArticles === 0) {
-              allArticlesCompleted = true;
+          totalNouns -=1;
+          if (totalNouns === 0) {
+              allNounsCompleted = true;
               isGameOver = true;
               // Logic or notification when all articles are completed
               // Reset totalArticles
@@ -72,7 +72,7 @@
     </div>
 </div>
 
-<span>Articles completed: {allArticlesCompleted}</span>
+<span>Nouns completed: {allNounsCompleted}</span>
 <div>Score: {score}</div>
 
 
