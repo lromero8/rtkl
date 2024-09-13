@@ -1,6 +1,6 @@
 <script lang='ts'>
-    import Article from '$lib/article/article.svelte';
-    import Noun from '$lib/noun/noun.svelte';
+    import Article from '$lib/article/+page.svelte';
+    import Noun from '$lib/noun/+page.svelte';
 
     export let isGameOver = false;
     export let score = 0;
