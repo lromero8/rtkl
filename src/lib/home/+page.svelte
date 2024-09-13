@@ -2,13 +2,10 @@
     import Article from '$lib/article/+page.svelte';
     import Noun from '$lib/noun/+page.svelte';
 
-    export let isGameOver = false;
-    export let score = 0;
-
 </script>
 
 <div class="rtkl-container">
-    <Noun bind:isGameOver={isGameOver} bind:score={score}/>
+    <Noun />
     <Article />
 </div>
 

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onDestroy } from 'svelte';
-    import { articleStore } from '../../stores/store';
+    import { articleStore, isGameOverStore, scoreStore } from '../../stores/store';
     import { NOUNS } from './nouns';
     import type { Noun } from '$lib/noun';
 
@@ -11,11 +11,7 @@
     let isMatch: boolean;
     let hasAnswered = false;
     let totalNouns = NOUNS.length;
-    let allNounsCompleted = false;
     let unsubscribe: () => void;
-    
-    export let isGameOver = false;
-    export let score = 0;
 
 
 
@@ -27,20 +23,16 @@
         hasAnswered = selectedArticle !== null && selectedArticle !== undefined;
         isMatch = noun.definiteArticle === selectedArticle;
         if (isMatch) {
-          score++;
+          scoreStore.update(n => n + 1);
           totalNouns -=1;
           if (totalNouns === 0) {
-              allNounsCompleted = true;
-              isGameOver = true;
-              // Logic or notification when all articles are completed
-              // Reset totalArticles
-              // Reset score
+              isGameOverStore.set(true);
           }
           setTimeout(() => selectNewNoun(), 500)
         }
         else {
           if (hasAnswered && !isMatch) {
-            score--;
+            scoreStore.update(n => n - 1);
           }
           setTimeout(() => {
             hasAnswered = false;
@@ -72,8 +64,7 @@
     </div>
 </div>
 
-<span>Nouns completed: {allNounsCompleted}</span>
-<div>Score: {score}</div>
+<div>Score: {$scoreStore}</div>
 
 
 <style>
