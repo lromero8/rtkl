@@ -65,7 +65,7 @@
           await fetchScores();
         }
       } catch (err) {
-          console.error("There was an error saving your information", err);
+          console.error("There was an error saving your information ", err);
       }
   }
 
