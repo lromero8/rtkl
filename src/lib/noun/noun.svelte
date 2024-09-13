@@ -55,10 +55,6 @@
         articleStore.set(null);
     }
 
-    function dispatchModalEvent() {
-
-    }
-
     onDestroy(() => {
       unsubscribe();
     });
