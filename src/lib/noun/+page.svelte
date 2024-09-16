@@ -66,7 +66,7 @@
     </div>
 </div>
 
-<div>Score: {$scoreStore}</div>
+<div class="rtkl-score">Score: {$scoreStore}</div>
 
 
 <style>
@@ -92,6 +92,11 @@
 
   strong.correct, strong.incorrect {
     color: white;
+  }
+
+  div.rtkl-score {
+    margin: 20px 0;
+    text-align: center;
   }
 
 </style>
