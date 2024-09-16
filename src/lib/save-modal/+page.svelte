@@ -149,6 +149,10 @@
       width: 500px;
       height: 300px;
       overflow-y: auto;
+
+      @media screen and (max-width: 750px) {
+        width: 300px;
+      }
     }
   
     .rtkl-modal-header {
