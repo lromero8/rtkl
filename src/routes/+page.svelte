@@ -17,6 +17,8 @@
   };
   let savedScores: Score[];
   let nickName: '';
+  let showError = false;
+  let errorMsg: unknown;
 
 
   function setScoresStore() {
@@ -29,6 +31,7 @@
 
   function saveScore() {
     try {
+      showError = false;
       newScore.user = nickName;
       newScore.score = $scoreStore;
       newScore.language = 'german';
@@ -49,8 +52,10 @@
 
       console.log(`${nickName}'s' scored of ${$scoreStore} successfully saved!`);
     }
-    catch (error) {
-      console.error(error);
+    catch (err) {
+      showError = true;
+      errorMsg = err;
+      console.error(err);
     }
 
       
@@ -58,10 +63,13 @@
 
   async function saveDoc() {
       try {
+        showError = false;
         if (newScore) {
           await addDoc(collection(db, 'scores'), { score: newScore });
         }
       } catch (err) {
+          showError = true;
+          errorMsg = err;
           console.error("There was an error saving your information ", err);
       }
   }
@@ -87,34 +95,38 @@
   
 {#if $isGameOverStore}
 
-  <div class="modal-overlay">
-    <div class="modal">
-      <!-- Your modal content goes here -->
-      <div class="modal-header">
+  <div class="rtkl-modal-overlay">
+    <div class="rtkl-modal">
+      <div class="rtkl-modal-header">
         <h2>Game Over</h2>
       </div>
-      <div class="modal-body">
-        <!-- Add your modal content here -->
-        <p>Your game is over!</p>
-        <p>Score: {$scoreStore} points</p>
+      <div class="rtkl-modal-body">
+        <p class="rtkl-score">Score: {$scoreStore} points</p>
 
         <div>
           <input type="text" placeholder="rtklEater123" bind:value={nickName}>
-          <button on:click={saveScore}>Save</button>
         </div>
 
+        {#if showError}
+          <p class="rtkl-error-msg">{errorMsg}</p>
+        {/if}
+
       </div>
-      <div class="modal-footer">
-        <button on:click={reset}>Close</button>
+      <div class="rtkl-modal-footer">
+        <button class="rtkl-close" on:click={reset}>Close</button>
+        <button class="rtkl-save" on:click={saveScore}>Save</button>
       </div>
     </div>
   </div>
 {/if}
 
-<style>
+<style lang="scss">
   /* div.rtkl-language-dropdown {} */
 
-  .modal-overlay {
+  $bg-color-save: #4caf50;
+  $bg-color-close: #f44336;
+
+  .rtkl-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -127,7 +139,7 @@
     z-index: 999;
   }
 
-  .modal {
+  .rtkl-modal {
     background: #fff;
     border-radius: 5px;
     padding: 20px;
@@ -136,17 +148,52 @@
     height: 300px;
   }
 
-  .modal-header {
+  .rtkl-modal-header {
     text-align: center;
     margin-bottom: 10px;
   }
 
-  .modal-body {
+  .rtkl-modal-body {
     text-align: center;
     margin-bottom: 20px;
+
+    input {
+      padding: 0.5rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: 14px;
+    }
+
+    .rtkl-error-msg {
+      color: $bg-color-close;
+    }
   }
 
-  .modal-footer {
+  .rtkl-score {
+    margin: 20px 0;
+  }
+
+  .rtkl-modal-footer {
     text-align: center;
+
+    button {
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        color: #333;
+        border-radius: 14px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    button.rtkl-save:hover {
+        background-color: $bg-color-save;
+        color: #fff;
+    }
+
+    button.rtkl-close:hover {
+        background-color: $bg-color-close;
+        color: #fff;
+    }
   }
 </style>
