@@ -3,40 +3,38 @@
     import { addDoc, collection } from "firebase/firestore";
     import { isGameOverStore, savedScoresStore, scoreStore } from "../../stores/store";
     import { db } from "$lib/firebase/firebase";
-    import { onMount } from "svelte";
 
     let newScore: Score = {
         user: '',
         language: 'german',
         score: 0
     };
-    let savedScores: Score[];
-    let nickName: '';
     let showError = false;
     let errorMsg: unknown;
+    let showLeaderboard = false;
 
     function saveScore() {
         try {
             showError = false;
-            newScore.user = nickName;
             newScore.score = $scoreStore;
             newScore.language = 'german';
 
             // Check if nickname already exists in the store (instead of fetching again)
-            if (savedScores.some(sd => sd.user === newScore.user)) {
+            if ($savedScoresStore.some(sd => sd.user === newScore.user)) {
                 throw Error('Nickname already exists!');
             }
+            else {
+                // Save the score to Firestore
+                saveDoc()
+    
+                // Directly update the store with the new score (no need to fetch from Firestore again)
+                savedScoresStore.update(scores => [...scores, newScore]);
+    
+                showLeaderboard = true;
+    
+                console.log(`${newScore.user}'s' scored of ${$scoreStore} successfully saved!`);
+            }
 
-            // Save the score to Firestore
-            saveDoc()
-
-            // Directly update the store with the new score (no need to fetch from Firestore again)
-            savedScoresStore.update(scores => [...scores, newScore]);
-
-            savedScores = [...savedScores, newScore];
-            console.log(savedScores);
-
-            console.log(`${nickName}'s' scored of ${$scoreStore} successfully saved!`);
         }
         catch (err) {
             showError = true;
@@ -63,9 +61,14 @@
     function reset() {
         isGameOverStore.set(false);
         scoreStore.set(0);
+        showLeaderboard = false;
+        newScore = {
+            user: '',
+            language: 'german',
+            score: 0
+        }
     }
 
-    onMount(() => savedScoresStore.subscribe((sss) => savedScores = sss));
 
 </script>
 
@@ -74,23 +77,46 @@
   <div class="rtkl-modal-overlay">
     <div class="rtkl-modal">
       <div class="rtkl-modal-header">
-        <h2>Game Over</h2>
+        <h2>{showLeaderboard ? 'Leaderboard' : 'Game Over'}</h2>
       </div>
       <div class="rtkl-modal-body">
-        <p class="rtkl-score">Score: {$scoreStore} points</p>
 
-        <div>
-          <input type="text" placeholder="rtklEater123" bind:value={nickName}>
-        </div>
+        {#if showLeaderboard}
+            <table class="rtkl-modal-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each $savedScoresStore.sort((a, b) => b.score - a.score) as savedScore}
+                        <tr>
+                            <td>{savedScore.user}</td>
+                            <td>{savedScore.score}</td>
+                        </tr>
+                    {/each}
+                </tbody>
+            </table>
+        {:else}
+            <p class="rtkl-score">Score: {$scoreStore} points</p>
 
-        {#if showError}
-          <p class="rtkl-error-msg">{errorMsg}</p>
+            <div>
+                <input type="text" placeholder="rtklEater123" bind:value={newScore.user}>
+            </div>
+
+            {#if showError}
+                <p class="rtkl-error-msg">{errorMsg}</p>
+            {/if}
+
         {/if}
 
       </div>
       <div class="rtkl-modal-footer">
         <button class="rtkl-close" on:click={reset}>Close</button>
-        <button class="rtkl-save" on:click={saveScore}>Save</button>
+        {#if !showLeaderboard}
+            <button class="rtkl-save" on:click={saveScore}>Save</button>
+        {/if}
       </div>
     </div>
   </div>
@@ -122,6 +148,7 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
       width: 500px;
       height: 300px;
+      overflow-y: auto;
     }
   
     .rtkl-modal-header {
@@ -171,5 +198,37 @@
           background-color: $bg-color-close;
           color: #fff;
       }
+    }
+
+    table.rtkl-modal-table {
+        border-collapse: collapse;
+        width: 100%;
+        @media screen and (max-width: 750px) {
+            font-size: 0.8rem;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 5px;
+        }
+
+        th {
+            background-color: #2196f3;
+            color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        th:hover {
+            background-color: #595d65;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+            cursor: pointer;
+        }
     }
 </style>
