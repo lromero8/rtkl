@@ -75,13 +75,13 @@
 
 </script>
 
-<div class="rtkl-language-dropdown">
+<!-- <div class="rtkl-language-dropdown">
   <select name="" id="">
       <option value="french">French</option>
       <option value="spanish">Spanish</option>
       <option value="german">German</option>
   </select>
-</div>
+</div> -->
 
 <Home />
   
@@ -112,7 +112,7 @@
 {/if}
 
 <style>
-  div.rtkl-language-dropdown {}
+  /* div.rtkl-language-dropdown {} */
 
   .modal-overlay {
     position: fixed;
@@ -132,7 +132,8 @@
     border-radius: 5px;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    width: 300px;
+    width: 500px;
+    height: 300px;
   }
 
   .modal-header {
