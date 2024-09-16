@@ -27,6 +27,7 @@
           totalNouns -=1;
           if (totalNouns === 0) {
               isGameOverStore.set(true);
+              totalNouns = NOUNS.length;
           }
           setTimeout(() => selectNewNoun(), 500)
         }
